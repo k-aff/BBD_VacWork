@@ -1,10 +1,10 @@
 # BBD_VacWork
-# Hexadecimal, Binary, and Decimal Calculator
+# Decimal, Binary and  Hexadecimal Calculator 
 
-This project is a versatile calculator that allows users to perform arithmetic operations (addition, subtraction, multiplication, division) on numbers in **Hexadecimal**, **Binary**, and **Decimal** formats. Built with **HTML**, **CSS**, and **JavaScript**, this web-based tool provides an easy-to-use interface for quick calculations and conversions.
+This project is a versatile calculator that allows users to perform arithmetic operations (addition, subtraction, multiplication, division) on numbers in **Decimal**, **Hexadecimal** and **Binary** formats. Built with **HTML**, **CSS**, and **JavaScript**, this web-based tool provides an easy-to-use interface for quick calculations and conversions.
 
 ### Features:
-- Supports **Hexadecimal**, **Binary**, and **Decimal** number systems.
+- Supports **Decimal**, **Hexadecimal** and **Binary**, number systems.
 - Perform basic arithmetic operations (addition, subtraction, multiplication, and division).
 - Users can choose which number format (Hexadecimal, Binary, or Decimal) they want to perform calculations in.
 - Simple, intuitive interface with clear inputs for each format.
