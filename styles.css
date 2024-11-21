@@ -1,3 +1,15 @@
 .html{
     background-color: rgb(143, 221, 255);
+    text-align: center;
+}
+
+.header{
+    width: 70%;
+    height : 20px;
+}
+
+.calc{
+    margin: auto;
+    height: 20vw;
+    width: 50%;
 }
