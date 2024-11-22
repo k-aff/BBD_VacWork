@@ -1,63 +1,91 @@
-document.addEventListener("DOMContentLoaded", function() {
-   var input = "";
-   var expNum = 0;
+document.addEventListener("DOMContentLoaded", function () {
+    let input = ""; 
+    let expNum = 0;
+    let open = 0; 
 
-    var buttons = document.getElementsByClassName("el");
+    const buttons = document.getElementsByClassName("el");
 
-    for (var i = 0; i < buttons.length; i++) {
+    for (let i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener("click", handleClick);
     }
 
     function handleClick() {
-        var value = this.getAttribute("data-value");
-        
-        if (value === "clear") {
-            clearInput();
-        } else if (value === "=") {
-            evaluate();
-        } else {
-            if(expNum === 0){
-                clearInput();
-            }
+        const value = this.getAttribute("data-value");
+
+        if (value === "clear") 
+            clearInput()
+        else if (value === "=") 
+            evaluate()
+        else {
+            if (expNum === 0) clearInput(); 
             expNum++;
             append(value);
         }
     }
 
     function clearInput() {
-        input = ""; // Clear the input
-        document.getElementById("screen").value = ""; // Clear the screen
+        input = "";
+        document.getElementById("screen").value = "";
+        expNum = 0;
+        open = 0;
     }
 
     function append(value) {
-        input += value; // Append clicked value to input
-        document.getElementById("screen").value = input; // Update the screen
+        if (value === "sin" || value === "cos" || value === "tan") {
+            input += `${value}(`; 
+            open++; 
+        } else if (value === "(") {
+            input += value;
+            open++;
+        } else if (value === ")") {
+            if (open > 0) 
+                open--; 
+            else {
+                alert("Missing opening bracket");
+                return;
+            }
+            input += value;
+        } else {
+            input += value; 
+        }
+
+        document.getElementById("screen").value = input;
     }
 
     function evaluate() {
-        input = safeEval(input); // Evaluate expression
-        document.getElementById("screen").value = input; // Show result
-        expNum = 0;
-          
-    }
+        if (open > 0) {
+            alert("Missing closing brackets!");
+            return;
+        }
 
-    function safeEval(expression) {
-        // Using Function is not recommended; consider using a math library
-        return Function('"use strict";return (' + expression + ')')();
+        
+        const tweakedInput = input
+        .replace(/sin/, "Math.sin")
+        .replace(/cos/g, "Math.cos")
+        .replace(/tan/g, "Math.tan");
+
+        const result = Function('"use strict"; return (' + tweakedInput + ')')();
+        input = result.toString(); 
+        document.getElementById("screen").value = input;
+        expNum = 0; 
+    
     }
 
     document.addEventListener("keydown", function (event) {
-        const validKeys = "0123456789+-*/=!"; // Allowed keys
+        const validKeys = "0123456789+-*/.()";
         const key = event.key;
-    
-        if (key === "=")
-            evaluate(); 
-        else if (validKeys.includes(key))
-            append(key); 
-        else if(key === "Delete")
-            clearInput();
-        else
-            console.error(`Unsupported key: ${key}`);
+
+        if (key === "=") 
+            evaluate();
+        else if (validKeys.includes(key)) 
+            append(key);
+        else if (key === "Delete") clearInput();
+        else if (key === "Backspace") {
+            input = input.slice(0, -1); 
+            document.getElementById("screen").value = input;
+        } else if (key === "Shift") {}
+        else {
+            alert(`Unsupported key: ${key}`);
+        }
     });
-    
 });
