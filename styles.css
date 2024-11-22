@@ -1,15 +1,64 @@
 html{
-    background-color: rgb(143, 221, 255);
+    background-color: rgb(193, 236, 255);
     text-align: center;
 }
 
 #header{
-    width: 70%;
-    height : 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    height : 15vh;
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.511);
 }
 
 #calc{
+    height: 80vh;
+    width: 30%;
     margin: auto;
-    height: 20vw;
-    width: 50%;
+    border-radius: 10px;
+    background-color: rgb(160, 175, 251);
+}
+
+#screen{
+    height: 8%;
+    width: 85%;
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+    font-size: 3vh;
+    text-align: right;
+    margin: auto;
+}
+
+/* #inputs{
+    display: flex;
+    flex-direction: row;
+
+} */
+
+.el{
+    height: 5vh;
+    width: 20%;
+    border: none;
+    border-radius: 5px;
+    margin-top: 4%;
+    font-size: medium;
+    font-weight:lighter;
+    background-color: rgba(220, 240, 255, 0.933);
+}
+
+.el:hover{
+    height: 5vh;
+    width: 21%;
+    background-color: rgba(152, 210, 254, 0.933);
+}
+
+#clear, #eval{
+    height: 5vh;
+    width: 41%;
+}
+.symbol{
+    font-family: "Lucida Handwriting", cursive;
 }

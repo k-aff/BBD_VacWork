@@ -5,15 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hexadecimal, Binary, Decimal Calculator</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="index.js"></script>
 </head>
 <body>
-    <header>
-        <div id="header">
-            <h1>Hexadecimal, Binary, and Decimal Calculator</h1>
-            <p>Convert and calculate numbers in Hexadecimal, Binary, and Decimal formats.</p>
+    <div id="header">
+        <h1>Scientific Calculator</h1>
+        <!-- <p>Convert and calculate numbers in Hexadecimal, Binary, and Decimal formats.</p> -->
+    </div>
+    <br/><br/>
+    <div id="calc">
+        <br/><br/>
+        <input id="screen" type="text" placeholder="Let's claculate..." disabled/>
+        <br/><br/>
+        <div id="inputs">
+            <button class="el" id="clear" data-value="clear">clear</button>
+            <button class="el" id="eval" data-value="=">=</button>
+            <button class="el">&#8730;</button>
+            <button class="el">&#8731;</button>
+            <button class="el">&#8317;</button>
+            <button class="el">&#8318;</button>
+            <button class="el symbol">x <sup>2</sup></button>
+            <button class="el symbol">x <sup>y</sup></button>
+            <button class="el">&#37;</button>
+            <button class="el symbol">sin x</button>
+            <button class="el symbol">cos x</button>
+            <button class="el symbol">tan x</button>
+            <button class="el">!</button>
+            <button class="el" data-value="π">&#8508;</button>
+            <br/><br/>
+            <button class="el" data-value="0">0</button>
+            <button class="el" data-value="1">1</button>
+            <button class="el" data-value="2">2</button>
+            <button class="el" data-value="3">3</button>
+            <button class="el" data-value="4">4</button>
+            <button class="el" data-value="5">5</button>
+            <button class="el" data-value="6">6</button>
+            <button class="el" data-value="7">7</button>
+            <button class="el" data-value="8">8</button>
+            <button class="el" data-value="9">9</button>
+            <button class="el" data-value="+">+</button>
+            <button class="el" data-value="-">-</button>
+            <button class="el" data-value="*">&#215;</button>
+            <button class="el" data-value="/" style="font-weight:bolder;">/</button>
+
         </div>
-        <div id="calc">
-        </div>
-    </header>
+        <br><br>
+    </div>
 </body>
 </html>
+
+<!--
+# BBD_VacWork
+# Decimal and Binary Scientific Calculator
+
+This project is a versatile scientific calculator that allows users to perform arithmetic and bitwise operations on numbers in **Decimal** and **Binary** formats. Built with **HTML**, **CSS**, and **JavaScript**, this web-based tool provides an intuitive interface for quick calculations and conversions.
+
+### Features:
+- Supports **Decimal** and **Binary** number systems.
+- Perform basic arithmetic operations (addition, subtraction, multiplication, and division).
+- Perform bitwise operations (AND, OR, XOR, NOT, etc.).
+- Users can choose which number format (Binary or Decimal) they want to perform calculations in.
+- Simple, intuitive interface with clear inputs for each format.
+
+### How to Use:
+1. Select the number system (Binary or Decimal) for your input.
+2. Enter numbers in the chosen format.
+3. Choose the arithmetic or bitwise operation you want to perform.
+4. The result will be displayed in the selected format.
+
+### Technologies Used:
+- **HTML** for structure and layout.
+- **CSS** for styling and responsiveness.
+- **JavaScript** for calculation logic and format conversions.
+
+Enjoy using the calculator to seamlessly switch between Decimal and Binary systems and perform both scientific and bitwise operations!
+-->
