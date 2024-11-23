@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let input = "", secInput = "", exp = "";
+    let input = "", secInput = "", exp = "", prev = "";
     let symNum = 0;
     let open = 0; 
 
@@ -35,7 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (value === "sin" || value === "cos" || value === "tan") {
             input += `${value}(`; 
-            secInput += `${value}(`; 
+            if(input != "")
+                secInput += `*${value}(`;
+            else
+                secInput += `${value}(`;
             open++; 
             
         } else if (value === "(") {
@@ -45,20 +48,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
         } else if (value === ")") {
 
-           if (open > 0) {
-            if (exp === "nada") {
-                secInput = `Math.pow(${secInput}, ${exp})`;
-                exp = ""; 
-            } else {
-                secInput += value; 
-            }
-            open--; 
-        } else {
-            alert("Missing opening bracket");
-            return;
-        }
+            console.log(input)
+            console.log(secInput)
 
-        input += value;
+            if (open > 0) {
+                if (exp != "nada") {
+                    secInput = `Math.pow(${secInput.replace(exp,"")}, ${exp})`;
+                    exp = ""; 
+                } else {
+                    secInput += value;  
+                }
+                open--; 
+            } else {
+                alert("Missing opening bracket");
+                return;
+            }
+
+            console.log(input)
+            console.log(secInput)
+            input += value;
 
         } else if(value === "x^2"){
             if(input === ""){
@@ -77,11 +85,33 @@ document.addEventListener("DOMContentLoaded", function () {
             input += "^("
             open++;
 
-        } else if(exp === "nada"){
+        } else if(value === "π"){
+
+            if(input != "")
+                secInput += "*Math.PI";
+            else
+                secInput += "Math.PI";
+
+            input += value; 
+
+        } else if(value === "e"){
+            if(input != "")
+                secInput += "*Math.E";
+            else
+                secInput += "Math.E";
+
+            input += value; 
+
+        }else if(value === "√"){
+            input += value + "("; 
+            secInput += value + "("; 
+            open++;
+
+        }else if(exp === "nada"){
             exp = value
             input += value; 
             secInput += value;
-        }
+        } 
         else {
             input += value; 
             secInput += value;
@@ -100,6 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .replace(/sin/g, "Math.sin")
         .replace(/cos/g, "Math.cos")
         .replace(/tan/g, "Math.tan")
+        .replace(/√/g, "Math.sqrt")
 
         const result = Function('"use strict"; return (' + tweakedInput + ')')();
         secInput = result.toString(); 
