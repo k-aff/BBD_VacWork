@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let input = "", secInput = "", exp = "", prev = "";
+    let input = "", secInput = "", exp = "", root = "";
     let symNum = 0;
     let open = 0; 
 
@@ -48,14 +48,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
         } else if (value === ")") {
 
-            console.log(input)
             console.log(secInput)
+            console.log(root)
 
             if (open > 0) {
                 if (exp != "nada") {
                     secInput = `Math.pow(${secInput.replace(exp,"")}, ${exp})`;
                     exp = ""; 
-                } else {
+                } else if(root != "nada"){
+                    const base = parseFloat(root)
+                    base = 1/base
+                    secInput = `Math.pow(1*(${secInput.replace(root,"")}), ${base.toString()})`;
+                    root = ""; 
+                }else {
                     secInput += value;  
                 }
                 open--; 
@@ -107,12 +112,25 @@ document.addEventListener("DOMContentLoaded", function () {
             secInput += value + "("; 
             open++;
 
-        }else if(exp === "nada"){
-            exp = value
+        }else if(value === "x√"){
+            root = secInput
+            input += "√("
+            open++;
+
+        }else if(exp != ""){
+            if(exp === "nada")
+                exp = ""
+            exp += value
             input += value; 
             secInput += value;
-        } 
-        else {
+
+        // } else if(root != ""){
+        //     if(root === "nada")
+        //         root = ""
+        //     root += value
+        //     input += value; 
+        //     secInput += value;
+        } else {
             input += value; 
             secInput += value;
         }
@@ -131,6 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .replace(/cos/g, "Math.cos")
         .replace(/tan/g, "Math.tan")
         .replace(/√/g, "Math.sqrt")
+        // .replace(/l1/g, "1/")
 
         const result = Function('"use strict"; return (' + tweakedInput + ')')();
         secInput = result.toString(); 
