@@ -15,23 +15,30 @@
     <br/><br/>
     <div id="calc">
         <br/><br/>
-        <input id="screen" type="text" placeholder="Let's claculate..." disabled/>
+        <input id="screen" type="text" placeholder="Type expression..." disabled/>
         <br/><br/>
         <div id="inputs">
             <button class="el" id="clear" data-value="clear">clear</button>
             <button class="el" id="eval" data-value="=">=</button>
             <button class="el">&#8730;</button>
-            <button class="el">&#8731;</button>
-          
-            <button class="el symbol">x <sup>2</sup></button>
-            <button class="el symbol">x <sup>y</sup></button>
+            <button class="el"> <sup>x</sup>&#8730;</button>
+            <button class="el symbol" data-value="x^2">x <sup>2</sup></button>
+            <button class="el symbol" data-value="x^y">x <sup>y</sup></button>
             <button class="el">&#37;</button>
             <button class="el symbol" data-value="sin">sin x</button>
             <button class="el symbol" data-value="cos">cos x</button>
             <button class="el symbol" data-value="tan">tan x</button>
             <button class="el" data-value="!">!</button>
             <button class="el" data-value="π">&#8508;</button>
+            <button class="el" data-value="e">&#8495;</button>
+            <button class="el" data-value="log">log <sub>x</sub> y </button>
             <br/><br/>
+            <button class="el" data-value="+">+</button>
+            <button class="el" data-value="-">-</button>
+            <button class="el" data-value="*">&#215;</button>
+            <button class="el" data-value="/">/</button>
+            <button class="el" data-value="(">&#8317;</button>
+            <button class="el" data-value=")">&#8318;</button>
             <button class="el" data-value="0">0</button>
             <button class="el" data-value="1">1</button>
             <button class="el" data-value="2">2</button>
@@ -42,13 +49,7 @@
             <button class="el" data-value="7">7</button>
             <button class="el" data-value="8">8</button>
             <button class="el" data-value="9">9</button>
-            <button class="el" data-value="(">&#8317;</button>
-            <button class="el" data-value=")">&#8318;</button>
-            <button class="el" data-value="+">+</button>
-            <button class="el" data-value="-">-</button>
-            <button class="el" data-value="*">&#215;</button>
-            <button class="el" data-value="/" style="font-weight:bolder;">/</button>
-
+           
         </div>
         <br><br>
     </div>

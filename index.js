@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let input = ""; 
-    let expNum = 0;
+    let input = "", secInput = "", exp = "";
+    let symNum = 0;
     let open = 0; 
 
     const buttons = document.getElementsByClassName("el");
@@ -17,36 +17,74 @@ document.addEventListener("DOMContentLoaded", function () {
         else if (value === "=") 
             evaluate()
         else {
-            if (expNum === 0) clearInput(); 
-            expNum++;
+            if (symNum === 0) clearInput(); 
+            symNum++;
             append(value);
         }
     }
 
     function clearInput() {
-        input = "";
+        input = ""
+        secInput = ""
         document.getElementById("screen").value = "";
-        expNum = 0;
+        symNum = 0;
         open = 0;
     }
 
     function append(value) {
+
         if (value === "sin" || value === "cos" || value === "tan") {
             input += `${value}(`; 
+            secInput += `${value}(`; 
             open++; 
+            
         } else if (value === "(") {
             input += value;
+            secInput += value;
             open++;
+
         } else if (value === ")") {
-            if (open > 0) 
-                open--; 
-            else {
-                alert("Missing opening bracket");
-                return;
+
+           if (open > 0) {
+            if (exp === "nada") {
+                secInput = `Math.pow(${secInput}, ${exp})`;
+                exp = ""; 
+            } else {
+                secInput += value; 
             }
-            input += value;
+            open--; 
         } else {
+            alert("Missing opening bracket");
+            return;
+        }
+
+        input += value;
+
+        } else if(value === "x^2"){
+            if(input === ""){
+                alert("Exponent without base")
+                clearInput()
+            }
+            secInput = `Math.pow(${secInput}, 2)`;
+            input += "^2"
+
+        } else if(value === "x^y"){
+            if(input === ""){
+                alert("Exponent without base")
+                clearInput()
+            }
+            exp = "nada"
+            input += "^("
+            open++;
+
+        } else if(exp === "nada"){
+            exp = value
             input += value; 
+            secInput += value;
+        }
+        else {
+            input += value; 
+            secInput += value;
         }
 
         document.getElementById("screen").value = input;
@@ -58,16 +96,15 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        
-        const tweakedInput = input
-        .replace(/sin/, "Math.sin")
+        const tweakedInput = secInput
+        .replace(/sin/g, "Math.sin")
         .replace(/cos/g, "Math.cos")
-        .replace(/tan/g, "Math.tan");
+        .replace(/tan/g, "Math.tan")
 
         const result = Function('"use strict"; return (' + tweakedInput + ')')();
-        input = result.toString(); 
-        document.getElementById("screen").value = input;
-        expNum = 0; 
+        secInput = result.toString(); 
+        document.getElementById("screen").value = secInput;
+        symNum = 0; 
     
     }
 
