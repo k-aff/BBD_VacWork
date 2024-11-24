@@ -15,9 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (value === "clear") 
             clearInput();
         else if (value === "=") 
-            solving ? solveEquation() : evaluate();
-        else if (value === "solve")
-            toggleSolveMode();
+            evaluate();
         else {
             if (symNum === 0 && !solving) clearInput();
             symNum++;
@@ -37,6 +35,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function append(value) {
 
+        const signs = "+-*/";
+
+        // if(input!="" && input.charAt(input.length-1)==")" && !signs.includes(value))
+        //     secInput += "*"
+        
         if (solving) {
             equation += value;
             document.getElementById("screen").value = equation;
@@ -47,14 +50,25 @@ document.addEventListener("DOMContentLoaded", function () {
             input += "exp(";
             secInput += "Math.exp(";
             open++
+
         }else if (value === "sin" || value === "cos" || value === "tan") {
+
+            if(!signs.includes(input.charAt(input.length-1)))
+                secInput += "*"
+
             input += `${value}(`;
-            secInput += `${input !== "" ? "*" : ""}Math.${value}(`;
+            secInput += `${value}(`;
             open++;
         } else if (value === "(") {
+
+            if(secInput!="" && !signs.includes(secInput.charAt(secInput.length-1)))
+                secInput += "*" + value;
+            else
+                secInput += value;
+
             input += value;
-            secInput += value;
             open++;
+
         } else if (value === ")") {
             if (open > 0) {
                 if (exp && exp !== "nada") {
@@ -64,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     secInput = `Math.pow(${secInput.replace(root, "")}, 1/${root})`;
                     root = "";
                 } else if (num && num !== "nada") {
-                    secInput = `Math.log(${num})/Math.log(${base})`;
+                    secInput = extractBeforeLog(secInput) + `Math.log(${num})/Math.log(${base})`;
                     num = "";
                     base = "";
                 } else if (base && base !== "nada") {
@@ -101,18 +115,19 @@ document.addEventListener("DOMContentLoaded", function () {
             open++;
         } else if (value === "π") {
             const constantValue = "Math.PI";
-            input += value;
             if (base === "nada") base = constantValue;
             else if (exp === "nada") exp = constantValue;
             else if (num === "nada") num = constantValue;
             else secInput += (input !== "" ? "*" : "") + constantValue;
+            input += value;
+
         } else if (value === "e") {
             const constantValue = "Math.E";
-            input += value;
             if (base === "nada") base = constantValue;
             else if (exp === "nada") exp = constantValue;
             else if (num === "nada") num = constantValue;
             else secInput += (input !== "" ? "*" : "") + constantValue;
+            input += value;
 
         } else if(value ==="ln"){
             input += "ln(";
@@ -124,17 +139,26 @@ document.addEventListener("DOMContentLoaded", function () {
             secInput += "Math.sqrt(";
             open++;
         } else if (value === "x√") {
-            root = secInput;
+            if(secInput.includes("("))
+                root = extractContent(secInput)
+            else
+                root = secInput;
             input += "√(";
             open++;
         } else if (value === "log") {
+
+            secInput += (input !== ""&& !signs.includes(secInput.charAt(secInput.length-1)) ? "*" : "")
             input += "log_(";
             base = "nada";
             open++;
+
         }else if(value === "x!"){
             input += "!";
-            fact = true;
-
+            if(secInput.includes("(") && secInput.charAt(secInput.length-1)==")")
+                secInput = secInput.replace(`(${extractContent(secInput)})`,"") + factorial(extractContent(secInput)).toString()
+            else
+                secInput = factorial(secInput).toString()
+            
         } else if (exp) {
             if (exp === "nada") 
                 exp = "";
@@ -161,61 +185,59 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("screen").value = input;
     }    
 
-    // function toggleSolveMode() {
-    //     solving = true;
-    //     equation = "";
-    //     document.getElementById("screen").value = "Enter equation...";
-    // }
-
-    // function solveEquation() {
-    //     try {
-    //         const [lhs, rhs] = equation.split("=").map(side => side.trim());
-    //         if (!lhs || !rhs) throw new Error("Invalid equation format");
-
-    //         // Assume `x` as the variable to solve for
-    //         const solveForX = Function(
-    //             `"use strict"; return (x) => (${lhs}) - (${rhs});`
-    //         )();
-    //         const solution = binarySearchSolution(solveForX);
-    //         document.getElementById("screen").value = `x ≈ ${solution.toFixed(5)}`;
-    //         solving = false;
-    //     } catch (error) {
-    //         alert("Error solving equation: " + error.message);
-    //     }
-    // }
-
-    // function binarySearchSolution(func, tol = 1e-6) {
-    //     let low = -1e6, high = 1e6;
-    //     while (high - low > tol) {
-    //         const mid = (low + high) / 2;
-    //         const result = func(mid);
-    //         if (Math.abs(result) < tol) return mid;
-    //         if (result > 0) high = mid;
-    //         else low = mid;
-    //     }
-    //     return (low + high) / 2;
-    // }
 
     function factorial(n) {
+        if(n == 0 || n === 1)
+            return 1
+
         if (n < 0) {
             throw new Error("Factorial is not defined for negative numbers");
         }
-        if (n === 0 || n === 1) {
-            return 1;
-        }
+
         return n * factorial(n - 1);
     }
 
+    function extractContent(input) {
+        let stack = [];
+        let temp = "";
+    
+        for (let i = 0; i < input.length; i++) {
+            const char = input[i];
+    
+            if (char === '(') {
+                // Start of a new bracketed section
+                stack.push(char);
+            } else if (char === ')') {
+                // End of a bracketed section
+                stack.pop();
+                if (stack.length === 0) {
+                    // If the stack is empty, we've found the outermost brackets
+                    return temp;  // Return the content inside the outermost brackets
+                }
+            } else {
+                if (stack.length > 0) {
+                    // Collect characters inside brackets
+                    temp += char;
+                }
+            }
+        }
+    }
+
+    function extractBeforeLog(input) {
+        const logIndex = input.indexOf('log');  
+        if (logIndex !== -1) {  
+            return input.slice(0, logIndex); 
+        }
+        
+        return input; 
+    }
+
     function evaluate() {
+
+        console.log(secInput);
+
         if (open > 0) {
             alert("Missing closing brackets!");
-            return;
-        }
-
-        if(fact)
-        {
-            document.getElementById("screen").value = factorial(secInput).toString();
-            symNum = 0; 
             return;
         }
 
