@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let input = "", secInput = "", exp = "", root = "", base = "",num="", fact = false, equation = "", solving = false;;
+    let input = "", secInput = "", exp = "", root = "", base = "",num="", number = "", solving = false;;
     let symNum = 0;
     let open = 0; 
 
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
         else if (value === "=") 
             evaluate();
         else {
-            if (symNum === 0 && !solving) clearInput();
+            if (symNum === 0) clearInput();
             symNum++;
             append(value);
         }
@@ -27,6 +27,11 @@ document.addEventListener("DOMContentLoaded", function () {
         input = "";
         secInput = "";
         equation = "";
+        num = ""
+        root = ""
+        base = ""
+        exp = ""
+        number = ""
         solving = false;
         document.getElementById("screen").value = "";
         symNum = 0;
@@ -72,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else if (value === ")") {
             if (open > 0) {
                 if (exp && exp !== "nada") {
-                    secInput = `Math.pow(${secInput.replace(exp, "")}, ${exp})`;
+                    secInput += `Math.pow(${number}, ${exp})`;
                     exp = "";
                 } else if (root && root !== "nada") {
                     secInput = `Math.pow(${secInput.replace(root, "")}, 1/${root})`;
@@ -103,14 +108,33 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("Exponent without base");
                 clearInput();
             }
-            secInput = `Math.pow(${secInput}, 2)`;
+            if(secInput.includes("(") && secInput.charAt(secInput.length-1)==")")
+                secInput = secInput.replace(`(${extractContent(secInput)})`,"") + `Math.pow(${extractContent(secInput)}, 2)`;
+            else
+                secInput = `Math.pow(${secInput}, 2)`
+
+                console.log(secInput);
+
             input += "^2";
+
         } else if (value === "x^y") {
             if (input === "") {
                 alert("Exponent without base");
                 clearInput();
             }
             exp = "nada";
+
+            if(secInput.includes("(") && secInput.charAt(secInput.length-1)==")"){
+                number = extractContent(secInput);
+                secInput = secInput.replace(`(${number})`,"");
+            }
+            else {  
+                number = secInput;
+                secInput = "";
+            }
+                
+
+            console.log(secInput)
             input += "^(";
             open++;
         } else if (value === "π") {
@@ -147,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 root = secInput;
             input += "√(";
             open++;
-            
+
         } else if (value === "log") {
             secInput += (input !== ""&& !signs.includes(secInput.charAt(secInput.length-1)) ? "*" : "")
             input += "log_(";
@@ -166,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 exp = "";
             exp += value;
             input += value;
-            secInput += value;
+            // secInput += value;
 
         } else if (num) {
             if (num === "nada") 
@@ -199,44 +223,52 @@ document.addEventListener("DOMContentLoaded", function () {
         return n * factorial(n - 1);
     }
 
-    function extractContent(input) {
+    function extractContent(Finput) {
         let stack = [];
         let temp = "";
     
-        for (let i = 0; i < input.length; i++) {
-            const char = input[i];
+        for (let i = 0; i < Finput.length; i++) {
+            const char = Finput[i];
     
             if (char === '(') {
-                // Start of a new bracketed section
                 stack.push(char);
             } else if (char === ')') {
-                // End of a bracketed section
                 stack.pop();
                 if (stack.length === 0) {
-                    // If the stack is empty, we've found the outermost brackets
-                    return temp;  // Return the content inside the outermost brackets
+                    return temp; 
                 }
             } else {
                 if (stack.length > 0) {
-                    // Collect characters inside brackets
                     temp += char;
                 }
             }
         }
     }
 
-    function extractBeforeLog(input) {
-        const logIndex = input.indexOf('log');  
+    function extractBeforeLog(Finput) {
+        const logIndex = Finput.indexOf('log');  
         if (logIndex !== -1) {  
-            return input.slice(0, logIndex); 
+            return Finput.slice(0, logIndex); 
         }
         
-        return input; 
+        return Finput; 
     }
 
-    function evaluate() {
+    function extractLastOperation(Finput) {
 
-        console.log(secInput);
+        const operationRegex = /[+\-*/^](?=[^\d]*$)/;
+        
+        const lastOperationIndex = Finput.search(operationRegex);  
+    
+        if (lastOperationIndex !== -1) {
+            return Finput.slice(lastOperationIndex + 1).trim();  
+        }
+    
+        return Finput.trim(); 
+    }
+    
+
+    function evaluate() {
 
         if (open > 0) {
             alert("Missing closing brackets!");
