@@ -130,6 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
             input += value;
 
         } else if(value ==="ln"){
+            secInput += (input !== ""&& !signs.includes(secInput.charAt(secInput.length-1)) ? "*" : "")
             input += "ln(";
             base = "Math.E";
             num = "nada";
@@ -146,7 +147,6 @@ document.addEventListener("DOMContentLoaded", function () {
             input += "√(";
             open++;
         } else if (value === "log") {
-
             secInput += (input !== ""&& !signs.includes(secInput.charAt(secInput.length-1)) ? "*" : "")
             input += "log_(";
             base = "nada";
