@@ -1,23 +1,24 @@
-# BBD_VacWork
-# Hexadecimal, Binary, and Decimal Calculator
+# Scientific Decimal Calculator
 
-This project is a versatile calculator that allows users to perform arithmetic operations (addition, subtraction, multiplication, division) on numbers in **Hexadecimal**, **Binary**, and **Decimal** formats. Built with **HTML**, **CSS**, and **JavaScript**, this web-based tool provides an easy-to-use interface for quick calculations and conversions.
+This project is a powerful scientific calculator designed to handle a wide range of mathematical operations, including basic arithmetic, trigonometric functions, logarithms, and exponentiation, all while working in the **Decimal** number system. Built with **HTML**, **CSS**, and **JavaScript**, this web-based tool offers a user-friendly interface for performing complex calculations with precision.
 
 ### Features:
-- Supports **Hexadecimal**, **Binary**, and **Decimal** number systems.
-- Perform basic arithmetic operations (addition, subtraction, multiplication, and division).
-- Users can choose which number format (Hexadecimal, Binary, or Decimal) they want to perform calculations in.
-- Simple, intuitive interface with clear inputs for each format.
+- Perform **basic arithmetic** operations (addition, subtraction, multiplication, division).
+- Support for advanced **scientific functions** such as sine, cosine, tangent, logarithms, and exponentiation.
+- Clear and intuitive interface with easy-to-read input fields and results display.
+- Ability to use direct keyboard input
 
 ### How to Use:
-1. Select the number system (Hexadecimal, Binary, or Decimal) in which you want to perform calculations.
-2. Enter numbers in the chosen format.
-3. Choose the arithmetic operation you want to perform.
-4. The result will be displayed in the selected format.
+1. Enter the desired number or expression into the input field.
+2. Select the arithmetic or scientific operation you wish to perform.
+3. Press the "=" button to see the result.
+4. The result will be displayed in decimal format with scientific precision.
 
 ### Technologies Used:
 - **HTML** for structure and layout.
 - **CSS** for styling and responsiveness.
-- **JavaScript** for calculation logic and format conversions.
+- **JavaScript** for mathematical logic and real-time calculation handling.
 
-Enjoy using the calculator to easily switch between number systems and perform operations seamlessly!
+---
+
+Enjoy using the Scientific Decimal Calculator to perform accurate, scientific calculations directly in your browser!
