@@ -1,4 +1,4 @@
-### Scientific Decimal Calculator
+# Scientific Decimal Calculator
 
 This project is a powerful scientific calculator designed to handle a wide range of mathematical operations, including basic arithmetic, trigonometric functions, logarithms, and exponentiation, all while working in the **Decimal** number system. Built with **HTML**, **CSS**, and **JavaScript**, this web-based tool offers a user-friendly interface for performing complex calculations with precision.
 
