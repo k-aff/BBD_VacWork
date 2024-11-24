@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let input = "", secInput = "", exp = "", root = "", base = "",num="", number = "", solving = false;;
+    let input = "", secInput = "", exp = "", root = "", base = "",num="", number = "", answer="", solving = false;
     let symNum = 0;
     let open = 0; 
 
@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("screen").value = equation;
             return;
         }
+
 
         if (value === "exp") {
             input += "exp(";
@@ -185,7 +186,11 @@ document.addEventListener("DOMContentLoaded", function () {
             else
                 secInput = factorial(secInput).toString()
             
-        } else if (exp) {
+        } else if(value==="ans"){
+            input +="ans";
+            secInput += answer
+            
+        }else if (exp) {
             if (exp === "nada") 
                 exp = "";
             exp += value;
@@ -284,6 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const result = Function('"use strict"; return (' + tweakedInput + ')')();
         secInput = result.toString(); 
         document.getElementById("screen").value = secInput;
+        answer = secInput;
         symNum = 0; 
     
     }
