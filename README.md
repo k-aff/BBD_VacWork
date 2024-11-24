@@ -23,4 +23,5 @@ This project serves as an introduction to who I am as a Computer Science student
 - **HTML**: For the structure and layout of the page.
 - **CSS**: For styling and ensuring the profile is responsive and visually appealing.
 
+---
 Thank you for visiting my profile! Feel free to explore the content and learn more about my academic journey and professional experiences.
