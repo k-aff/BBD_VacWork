@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (base === "nada") base = constantValue;
             else if (exp === "nada") exp = constantValue;
             else if (num === "nada") num = constantValue;
-            else secInput += (input !== "" ? "*" : "") + constantValue;
+            else secInput += (input !== ""&& !signs.includes(secInput.charAt(secInput.length-1)) ? "*" : "") + constantValue;
             input += value;
 
         } else if (value === "e") {
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (base === "nada") base = constantValue;
             else if (exp === "nada") exp = constantValue;
             else if (num === "nada") num = constantValue;
-            else secInput += (input !== "" ? "*" : "") + constantValue;
+            else secInput += (input !== ""&& !signs.includes(secInput.charAt(secInput.length-1)) ? "*" : "") + constantValue;
             input += value;
 
         } else if(value ==="ln"){
@@ -139,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
             input += value + "(";
             secInput += "Math.sqrt(";
             open++;
+
         } else if (value === "x√") {
             if(secInput.includes("("))
                 root = extractContent(secInput)
@@ -146,6 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 root = secInput;
             input += "√(";
             open++;
+            
         } else if (value === "log") {
             secInput += (input !== ""&& !signs.includes(secInput.charAt(secInput.length-1)) ? "*" : "")
             input += "log_(";
