@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let input = "", secInput = "", exp = "", root = "";
+    let input = "", secInput = "", exp = "", root = "", base = "",num="";
     let symNum = 0;
     let open = 0; 
 
@@ -32,111 +32,113 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function append(value) {
-
         if (value === "sin" || value === "cos" || value === "tan") {
-            input += `${value}(`; 
-            if(input != "")
-                secInput += `*${value}(`;
-            else
-                secInput += `${value}(`;
-            open++; 
-            
+            input += `${value}(`;
+            secInput += `${input !== "" ? "*" : ""}Math.${value}(`;
+            open++;
         } else if (value === "(") {
             input += value;
             secInput += value;
             open++;
-
         } else if (value === ")") {
-
-            console.log(secInput)
-            console.log(root)
-
             if (open > 0) {
-                if (exp != "nada") {
-                    secInput = `Math.pow(${secInput.replace(exp,"")}, ${exp})`;
-                    exp = ""; 
-                } else if(root != "nada"){
-                    const base = parseFloat(root)
-                    base = 1/base
-                    secInput = `Math.pow(1*(${secInput.replace(root,"")}), ${base.toString()})`;
-                    root = ""; 
-                }else {
-                    secInput += value;  
+                if (exp && exp !== "nada") {
+                    secInput = `Math.pow(${secInput.replace(exp, "")}, ${exp})`;
+                    exp = "";
+                } else if (root && root !== "nada") {
+                    secInput = `Math.pow(${secInput.replace(root, "")}, 1/${root})`;
+                    root = "";
+                } else if (num && num !== "nada") {
+                    secInput = `Math.log(${num})/Math.log(${base})`;
+                    num = "";
+                    base = "";
+                } else if (base && base !== "nada") {
+                    num = "nada";
+                } else {
+                    secInput += value;
                 }
-                open--; 
+                open--;
             } else {
                 alert("Missing opening bracket");
                 return;
             }
-
-            console.log(input)
-            console.log(secInput)
-            input += value;
-
-        } else if(value === "x^2"){
-            if(input === ""){
-                alert("Exponent without base")
-                clearInput()
+    
+            if (base && base !== "nada") {
+                input += ")(";
+                open++;
+            } else {
+                input += value;
+            }
+        } else if (value === "x^2") {
+            if (input === "") {
+                alert("Exponent without base");
+                clearInput();
             }
             secInput = `Math.pow(${secInput}, 2)`;
-            input += "^2"
-
-        } else if(value === "x^y"){
-            if(input === ""){
-                alert("Exponent without base")
-                clearInput()
+            input += "^2";
+        } else if (value === "x^y") {
+            if (input === "") {
+                alert("Exponent without base");
+                clearInput();
             }
-            exp = "nada"
-            input += "^("
+            exp = "nada";
+            input += "^(";
             open++;
+        } else if (value === "π") {
+            const constantValue = "Math.PI";
+            input += value;
+            if (base === "nada") base = constantValue;
+            else if (exp === "nada") exp = constantValue;
+            else if (num === "nada") num = constantValue;
+            else secInput += (input !== "" ? "*" : "") + constantValue;
+        } else if (value === "e") {
+            const constantValue = "Math.E";
+            input += value;
+            if (base === "nada") base = constantValue;
+            else if (exp === "nada") exp = constantValue;
+            else if (num === "nada") num = constantValue;
+            else secInput += (input !== "" ? "*" : "") + constantValue;
 
-        } else if(value === "π"){
-
-            if(input != "")
-                secInput += "*Math.PI";
-            else
-                secInput += "Math.PI";
-
-            input += value; 
-
-        } else if(value === "e"){
-            if(input != "")
-                secInput += "*Math.E";
-            else
-                secInput += "Math.E";
-
-            input += value; 
-
-        }else if(value === "√"){
-            input += value + "("; 
-            secInput += value + "("; 
+        } else if(value ==="ln"){
+            input += "ln(";
+            base = "Math.E";
+            num = "nada";
             open++;
-
-        }else if(value === "x√"){
-            root = secInput
-            input += "√("
+        // }else if (value === "√") {
+        //     input += value + "(";
+        //     secInput += "Math.sqrt(";
+        //     open++;
+        } else if (value === "x√") {
+            root = secInput;
+            input += "√(";
             open++;
-
-        }else if(exp != ""){
-            if(exp === "nada")
-                exp = ""
-            exp += value
-            input += value; 
+        } else if (value === "log") {
+            input += "log_(";
+            base = "nada";
+            open++;
+        } else if (exp) {
+            if (exp === "nada") 
+                exp = "";
+            exp += value;
+            input += value;
             secInput += value;
-
-        // } else if(root != ""){
-        //     if(root === "nada")
-        //         root = ""
-        //     root += value
-        //     input += value; 
-        //     secInput += value;
+        } else if (num) {
+            if (num === "nada") 
+                num = "";
+            num += value;
+            input += value;
+        } else if (base) {
+            if (base === "nada") 
+                base = "";
+            base += value;
+            input += value;
         } else {
-            input += value; 
+            input += value;
             secInput += value;
         }
-
+    
         document.getElementById("screen").value = input;
-    }
+    }    
 
     function evaluate() {
         if (open > 0) {
@@ -149,8 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .replace(/cos/g, "Math.cos")
         .replace(/tan/g, "Math.tan")
         .replace(/√/g, "Math.sqrt")
-        // .replace(/l1/g, "1/")
-
+        
         const result = Function('"use strict"; return (' + tweakedInput + ')')();
         secInput = result.toString(); 
         document.getElementById("screen").value = secInput;
