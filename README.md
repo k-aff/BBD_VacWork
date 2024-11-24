@@ -1,24 +1,14 @@
-### Scientific Decimal Calculator
+# BBD Student Vacation Work Program Introduction 2024
 
-This project is a powerful scientific calculator designed to handle a wide range of mathematical operations, including basic arithmetic, trigonometric functions, logarithms, and exponentiation, all while working in the **Decimal** number system. Built with **HTML**, **CSS**, and **JavaScript**, this web-based tool offers a user-friendly interface for performing complex calculations with precision.
+This repository hosts my code for the **BBD Student Vacation Work Program Introduction 2024**. The project is split into two branches:
 
-### Features:
-- Perform **basic arithmetic** operations (addition, subtraction, multiplication, division).
-- Support for advanced **scientific functions** such as sine, cosine, tangent, logarithms, and exponentiation.
-- Clear and intuitive interface with easy-to-read input fields and results display.
-- Ability to use direct keyboard input
+### Branches:
+1. **Professional Profile**  
+   This branch contains my **professional profile** for the program, showcasing my academic background, achievements, and skills.
 
-### How to Use:
-1. Enter the desired number or expression into the input field.
-2. Select the arithmetic or scientific operation you wish to perform.
-3. Press the "=" button to see the result.
-4. The result will be displayed in decimal format with scientific precision.
-
-### Technologies Used:
-- **HTML** for structure and layout.
-- **CSS** for styling and responsiveness.
-- **JavaScript** for mathematical logic and real-time calculation handling.
+2. **Calculator**  
+   This branch features a **Scientific Decimal Calculator**, designed to perform a wide range of scientific calculations in the decimal number system.
 
 ---
 
-Enjoy using the Scientific Decimal Calculator to perform accurate, scientific calculations directly in your browser!
+Feel free to explore both branches for more details on my professional journey and the scientific calculator project.
