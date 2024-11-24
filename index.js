@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let input = "", secInput = "", exp = "", root = "", base = "",num="";
+    let input = "", secInput = "", exp = "", root = "", base = "",num="", fact = false, equation = "", solving = false;;
     let symNum = 0;
     let open = 0; 
 
@@ -13,26 +13,41 @@ document.addEventListener("DOMContentLoaded", function () {
         const value = this.getAttribute("data-value");
 
         if (value === "clear") 
-            clearInput()
+            clearInput();
         else if (value === "=") 
-            evaluate()
+            solving ? solveEquation() : evaluate();
+        else if (value === "solve")
+            toggleSolveMode();
         else {
-            if (symNum === 0) clearInput(); 
+            if (symNum === 0 && !solving) clearInput();
             symNum++;
             append(value);
         }
     }
 
     function clearInput() {
-        input = ""
-        secInput = ""
+        input = "";
+        secInput = "";
+        equation = "";
+        solving = false;
         document.getElementById("screen").value = "";
         symNum = 0;
         open = 0;
     }
 
     function append(value) {
-        if (value === "sin" || value === "cos" || value === "tan") {
+
+        if (solving) {
+            equation += value;
+            document.getElementById("screen").value = equation;
+            return;
+        }
+
+        if (value === "exp") {
+            input += "exp(";
+            secInput += "Math.exp(";
+            open++
+        }else if (value === "sin" || value === "cos" || value === "tan") {
             input += `${value}(`;
             secInput += `${input !== "" ? "*" : ""}Math.${value}(`;
             open++;
@@ -104,10 +119,10 @@ document.addEventListener("DOMContentLoaded", function () {
             base = "Math.E";
             num = "nada";
             open++;
-        // }else if (value === "√") {
-        //     input += value + "(";
-        //     secInput += "Math.sqrt(";
-        //     open++;
+        }else if (value === "√") {
+            input += value + "(";
+            secInput += "Math.sqrt(";
+            open++;
         } else if (value === "x√") {
             root = secInput;
             input += "√(";
@@ -116,17 +131,23 @@ document.addEventListener("DOMContentLoaded", function () {
             input += "log_(";
             base = "nada";
             open++;
+        }else if(value === "x!"){
+            input += "!";
+            fact = true;
+
         } else if (exp) {
             if (exp === "nada") 
                 exp = "";
             exp += value;
             input += value;
             secInput += value;
+
         } else if (num) {
             if (num === "nada") 
                 num = "";
             num += value;
             input += value;
+
         } else if (base) {
             if (base === "nada") 
                 base = "";
@@ -140,9 +161,61 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("screen").value = input;
     }    
 
+    // function toggleSolveMode() {
+    //     solving = true;
+    //     equation = "";
+    //     document.getElementById("screen").value = "Enter equation...";
+    // }
+
+    // function solveEquation() {
+    //     try {
+    //         const [lhs, rhs] = equation.split("=").map(side => side.trim());
+    //         if (!lhs || !rhs) throw new Error("Invalid equation format");
+
+    //         // Assume `x` as the variable to solve for
+    //         const solveForX = Function(
+    //             `"use strict"; return (x) => (${lhs}) - (${rhs});`
+    //         )();
+    //         const solution = binarySearchSolution(solveForX);
+    //         document.getElementById("screen").value = `x ≈ ${solution.toFixed(5)}`;
+    //         solving = false;
+    //     } catch (error) {
+    //         alert("Error solving equation: " + error.message);
+    //     }
+    // }
+
+    // function binarySearchSolution(func, tol = 1e-6) {
+    //     let low = -1e6, high = 1e6;
+    //     while (high - low > tol) {
+    //         const mid = (low + high) / 2;
+    //         const result = func(mid);
+    //         if (Math.abs(result) < tol) return mid;
+    //         if (result > 0) high = mid;
+    //         else low = mid;
+    //     }
+    //     return (low + high) / 2;
+    // }
+
+    function factorial(n) {
+        if (n < 0) {
+            throw new Error("Factorial is not defined for negative numbers");
+        }
+        if (n === 0 || n === 1) {
+            return 1;
+        }
+        return n * factorial(n - 1);
+    }
+
     function evaluate() {
         if (open > 0) {
             alert("Missing closing brackets!");
+            return;
+        }
+
+        if(fact)
+        {
+            document.getElementById("screen").value = factorial(secInput).toString();
+            symNum = 0; 
             return;
         }
 
