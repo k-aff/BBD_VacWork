@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let input = "", secInput = "", exp = "", root = "", base = "",num="", number = "", answer="", perc = "", percNum="", solving = false;
+    let input = "", secInput = "", exp = "", root = "", rootNum="", base = "",num="", number = "", answer="", perc = "", percNum="", Exp=false, solving = false;
     let symNum = 0;
     let open = 0; 
 
@@ -34,6 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
         number = ""
         perc = ""
         percNum = ""
+        rootNum = ""
+        Exp = false;
         solving = false;
         document.getElementById("screen").value = "";
         symNum = 0;
@@ -42,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function append(value) {
 
-        const signs = "+-*/";
+        const signs = "+-*/(";
 
         // if(input!="" && input.charAt(input.length-1)==")" && !signs.includes(value))
         //     secInput += "*"
@@ -58,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
             input += "exp(";
             secInput += "Math.exp(";
             open++
+            Exp = true;
 
         }else if (value === "sin" || value === "cos" || value === "tan") {
 
@@ -82,9 +85,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (exp && exp !== "nada") {
                     secInput += `Math.pow(${number}, ${exp})`;
                     exp = "";
-                } else if (root && root !== "nada") {
-                    secInput = `Math.pow(${secInput.replace(root, "")}, 1/${root})`;
-                    root = "";
+                } else if (rootNum && rootNum !== "nada") {
+                    secInput += `Math.pow(${rootNum}, 1/${root})`;
+                    root = ""
+                    rootNum = ""
                 } else if (num && num !== "nada") {
                     secInput = extractBeforeLog(secInput) + `Math.log(${num})/Math.log(${base})`;
                     num = "";
@@ -95,6 +99,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     secInput = "(" + secInput + perc/100 * percNum + ")";
                     perc = ""
                     percNum = ""
+                }else if(Exp)
+                {
+                    secInput += ")"
                 } else {
                     secInput += value;
                 }
@@ -142,6 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(secInput)
             input += "^(";
             open++;
+
         } else if (value === "π") {
             const constantValue = "Math.PI";
             if (base === "nada") base = constantValue;
@@ -172,12 +180,22 @@ document.addEventListener("DOMContentLoaded", function () {
             open++;
 
         } else if (value === "x√") {
-            if(secInput.includes("("))
+
+            if(secInput.includes("(") && secInput.charAt(secInput.length-1)==")"){
                 root = extractContent(secInput)
-            else
+                secInput = secInput.replace(`(${root})`,"")
+            }else{
                 root = secInput;
+                secInput = ""
+            }
+            
+            rootNum = "nada"
             input += "√(";
             open++;
+
+            console.log(root)
+            console.log(secInput)
+
 
         } else if (value === "log") {
             secInput += (input !== ""&& !signs.includes(secInput.charAt(secInput.length-1)) ? "*" : "")
@@ -227,13 +245,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 base = "";
             base += value;
             input += value;
+
         }else if(percNum){
             if(percNum==="nada")
                 percNum= ""
             percNum += value
             input += value
             
-        } else {
+        } else if(rootNum){
+            if(rootNum==="nada")
+                rootNum= ""
+            rootNum += value
+            input += value
+        }else {
             input += value;
             secInput += value;
         }
@@ -256,23 +280,27 @@ document.addEventListener("DOMContentLoaded", function () {
     function extractContent(Finput) {
         let stack = [];
         let temp = "";
-    
-        for (let i = 0; i < Finput.length; i++) {
+        let foundClosing = false;
+
+        for (let i = Finput.length - 1; i >= 0; i--) {
             const char = Finput[i];
-    
-            if (char === '(') {
+
+            if (char === ')') {
+                if (!foundClosing) {
+                    foundClosing = true;
+                }
                 stack.push(char);
-            } else if (char === ')') {
+            } else if (char === '(') {
                 stack.pop();
-                if (stack.length === 0) {
-                    return temp; 
+                if (stack.length === 0 && foundClosing) {
+                    return temp.split('').reverse().join('');
                 }
-            } else {
-                if (stack.length > 0) {
-                    temp += char;
-                }
+            } else if (foundClosing && stack.length > 0) {
+                temp += char;
             }
         }
+
+        return "";
     }
 
     function extractBeforeLog(Finput) {
@@ -299,6 +327,8 @@ document.addEventListener("DOMContentLoaded", function () {
     
 
     function evaluate() {
+
+        console.log(secInput)
 
         if (open > 0) {
             alert("Missing closing brackets!");
