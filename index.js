@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let input = "", secInput = "", exp = "", root = "", base = "",num="", number = "", answer="", solving = false;
+    let input = "", secInput = "", exp = "", root = "", base = "",num="", number = "", answer="", perc = "", percNum="", solving = false;
     let symNum = 0;
     let open = 0; 
 
@@ -32,6 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
         base = ""
         exp = ""
         number = ""
+        perc = ""
+        percNum = ""
         solving = false;
         document.getElementById("screen").value = "";
         symNum = 0;
@@ -89,6 +91,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     base = "";
                 } else if (base && base !== "nada") {
                     num = "nada";
+                }else if(percNum && percNum!="nada"){
+                    secInput = "(" + secInput + perc/100 * percNum + ")";
+                    perc = ""
+                    percNum = ""
                 } else {
                     secInput += value;
                 }
@@ -133,8 +139,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 number = secInput;
                 secInput = "";
             }
-                
-
             console.log(secInput)
             input += "^(";
             open++;
@@ -186,7 +190,20 @@ document.addEventListener("DOMContentLoaded", function () {
             else
                 secInput = factorial(secInput).toString()
             
-        } else if(value==="ans"){
+        } else if(value === "%"){
+            input += "%(";
+            open++
+            if(secInput.includes("(") && secInput.charAt(secInput.length-1)==")"){
+                perc = extractContent(secInput)
+                secInput = secInput.replace(`(${perc})`,"") 
+                percNum = "nada"
+            }else{
+                perc = secInput;
+                secInput = ""
+                percNum = "nada"
+            }
+
+        }else if(value==="ans"){
             input +="ans";
             secInput += answer
             
@@ -208,6 +225,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 base = "";
             base += value;
             input += value;
+        }else if(percNum){
+            if(percNum==="nada")
+                percNum= ""
+            percNum += value
+            input += value
+            
         } else {
             input += value;
             secInput += value;
