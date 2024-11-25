@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }else if (value === "sin" || value === "cos" || value === "tan") {
 
-            if(!signs.includes(input.charAt(input.length-1)))
+            if(!signs.includes(secInput.charAt(secInput.length-1)))
                 secInput += "*"
 
             input += `${value}(`;
@@ -164,7 +164,9 @@ document.addEventListener("DOMContentLoaded", function () {
             base = "Math.E";
             num = "nada";
             open++;
+
         }else if (value === "√") {
+            secInput += (input !== ""&& !signs.includes(secInput.charAt(secInput.length-1)) ? "*" : "")
             input += value + "(";
             secInput += "Math.sqrt(";
             open++;
