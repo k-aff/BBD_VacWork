@@ -1,0 +1,64 @@
+name: Deploy Websites to GitHub Pages
+
+on:
+  push:
+    branches:
+      - Professional_Profile
+      - Calculator
+
+jobs:
+  deploy-professional-profile:
+    if: github.ref == 'refs/heads/Professional_Profile'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Professional_Profile branch
+      uses: actions/checkout@v3
+      with:
+        ref: Professional_Profile
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16' # Use the Node.js version suitable for your project
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Professional Profile website
+      run: npm run build # Replace with your build script for Professional_Profile
+
+    - name: Deploy Professional Profile to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build # Replace with your build output directory
+        publish_branch: gh-pages-professional-profile # Custom branch for deployment
+
+  deploy-calculator:
+    if: github.ref == 'refs/heads/Calculator'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Calculator branch
+      uses: actions/checkout@v3
+      with:
+        ref: Calculator
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16' # Use the Node.js version suitable for your project
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Calculator website
+      run: npm run build # Replace with your build script for Calculator
+
+    - name: Deploy Calculator to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build # Replace with your build output directory
+        publish_branch: gh-pages-calculator # Custom branch for deployment
